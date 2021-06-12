@@ -32,5 +32,4 @@ public class LotteryUserLoginTo implements Serializable {
 		this.password = password;
 	}
 
-	
 }

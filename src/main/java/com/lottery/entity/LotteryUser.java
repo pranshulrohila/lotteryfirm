@@ -1,7 +1,6 @@
 package com.lottery.entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,27 +8,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @Entity
-@Table(name = "LOTTERY_USER")
+@Table(name = "LOTTERY_USER", schema = "LOTTERYFIRM")
 public class LotteryUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LotteryUserIdGenerator")
+	@SequenceGenerator(name = "LotteryUserIdGenerator", sequenceName = "SEQ_LOTTERY_USER_ID", allocationSize = 1)
 	@Column(name = "USER_ID")
-	private Long userId;
+	private Integer userId;
 
 	@Column(name = "USER_PASSWORD")
 	private String userPassword;
 
 	@Column(name = "FIRST_NAME")
 	private String firstName;
-
+	
 	@Column(name = "MIDDLE_NAME")
 	private String middleName;
 
@@ -47,16 +49,17 @@ public class LotteryUser implements Serializable {
 	private Date dateOfBirth;
 
 	@Column(name = "UPDATED_DT")
-	private Timestamp updatedDt;
+	private Date updatedDt;
 
+	@Version
 	@Column(name = "USER_VERSION")
 	private Integer userVersion;
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -116,11 +119,11 @@ public class LotteryUser implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Timestamp getUpdatedDt() {
+	public Date getUpdatedDt() {
 		return updatedDt;
 	}
 
-	public void setUpdatedDt(Timestamp updatedDt) {
+	public void setUpdatedDt(Date updatedDt) {
 		this.updatedDt = updatedDt;
 	}
 

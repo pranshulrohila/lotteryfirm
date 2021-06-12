@@ -1,5 +1,7 @@
 package com.lottery.service;
 
+import java.util.Calendar;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,7 @@ public class LotteryUserService {
 		if (existingUser == null) {
 			existingUser = new LotteryUser();
 			populateUserJpaFromCreateUserTo(createUserTo, existingUser);
-			lotteryUserRepository.save(existingUser);
+			lotteryUserRepository.saveAndFlush(existingUser);
 			return USER_ADDED;
 		}
 		return DUPLICATE_USER;
@@ -60,5 +62,6 @@ public class LotteryUserService {
 		userJpa.setMiddleName(createUserTo.getMiddleName());
 		userJpa.setMobileNo(createUserTo.getMobileNo());
 		userJpa.setUserPassword(bCryptPasswordEncoder.encode(createUserTo.getUserPassword()));
+		userJpa.setUpdatedDt(Calendar.getInstance().getTime());
 	}
 }
