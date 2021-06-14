@@ -1,4 +1,4 @@
-package com.lottery.entity;
+package com.lottery.model;
 
 import java.io.Serializable;
 

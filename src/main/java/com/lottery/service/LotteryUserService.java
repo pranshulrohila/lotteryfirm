@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lottery.entity.LotteryUser;
-import com.lottery.entity.LotteryUserLoginTo;
+import com.lottery.model.LotteryUserLoginTo;
 import com.lottery.model.LotteryUserTo;
 import com.lottery.repository.LotteryUserRepository;
 
