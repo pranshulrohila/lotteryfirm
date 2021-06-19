@@ -1,7 +1,5 @@
 package com.lottery.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,7 @@ public class SlotController {
 	private SlotService slotService;
 
 	@GetMapping("/")
-	public ResponseEntity<List<SlotTo>> findAllSlots() {
-		return new ResponseEntity<List<SlotTo>>(slotService.findAllSlot(), HttpStatus.OK);
+	public ResponseEntity<SlotTo> findNextSlot() {
+		return new ResponseEntity<SlotTo>(slotService.findNextSlot(), HttpStatus.OK);
 	}
 }

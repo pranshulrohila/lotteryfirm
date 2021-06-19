@@ -1,6 +1,8 @@
 package com.lottery.service;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +18,31 @@ public class SlotService {
 	@Autowired
 	private SlotRepository slotRepository;
 
-	public List<SlotTo> findAllSlot() {
-		return convertEntitToModel(slotRepository.findAll());
+	public SlotTo findNextSlot() {
+		Date todayDate = Calendar.getInstance().getTime();
+		return convertEntitToModel(slotRepository.findByDate(todayDate), todayDate);
 	}
 
-	private List<SlotTo> convertEntitToModel(List<Slot> slotEntityList) {
-		List<SlotTo> slotToList = new ArrayList<>();
-		slotEntityList.forEach(s -> {
-			SlotTo slotTo = new SlotTo();
-			slotTo.setActiveFlg(s.getActiveFlg());
-			slotTo.setAvailableFlg(s.getAvailableFlg());
-			slotTo.setSlotDate(s.getSlotDate());
-			slotTo.setSlotId(s.getSlotId());
-			slotTo.setSlotVersion(s.getSlotVersion());
-			slotToList.add(slotTo);
-		});
-		return slotToList;
+	private SlotTo convertEntitToModel(List<Slot> slotEntityList, Date date) {
+		Comparator<Slot> comparator = Comparator.comparing(Slot::getSlotDate);
+		Slot slotEntity = slotEntityList.stream().min(comparator).get();
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+		cal1.setTime(date);
+		cal2.setTime(slotEntity.getSlotDate());
+		boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+				&& cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+		if (sameDay) {
+			slotEntityList.remove(slotEntity);
+			slotEntity = slotEntityList.stream().min(comparator).get();
+		}
+		SlotTo slotTo = new SlotTo();
+		slotTo.setActiveFlg(slotEntity.getActiveFlg());
+		slotTo.setAvailableFlg(slotEntity.getAvailableFlg());
+		slotTo.setSlotDate(slotEntity.getSlotDate());
+		slotTo.setSlotId(slotEntity.getSlotId());
+		slotTo.setSlotVersion(slotEntity.getSlotVersion());
+		return slotTo;
 	}
 
 }
